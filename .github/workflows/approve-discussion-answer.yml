@@ -1,0 +1,27 @@
+name: Approve discussion answer
+
+on:
+  workflow_dispatch:
+    inputs:
+      comment_id:
+        description: "Node ID of the discussion comment to mark as the answer"
+        required: true
+
+permissions:
+  discussions: write
+
+jobs:
+  mark-answer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark comment as answer
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+          mutation($commentId: ID!) {
+            markDiscussionCommentAsAnswer(input: {id: $commentId}) {
+              discussion { id url isAnswered }
+            }
+          }' \
+            -f commentId="${{ github.event.inputs.comment_id }}"

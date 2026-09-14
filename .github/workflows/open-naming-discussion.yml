@@ -1,0 +1,26 @@
+name: Open naming discussion
+
+on:
+  workflow_dispatch:
+
+permissions:
+  discussions: write
+
+jobs:
+  create-discussion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create discussion
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+          mutation($repoId: ID!, $catId: ID!, $title: String!, $body: String!) {
+            createDiscussion(input: {repositoryId: $repoId, categoryId: $catId, title: $title, body: $body}) {
+              discussion { id url }
+            }
+          }' \
+            -f repoId="R_kgDOUbC9XQ" \
+            -f catId="DIC_kwDOUbC9Xc4DFnHz" \
+            -f title="What should we name the first endpoint?" \
+            -f body="We have a health check endpoint in \`HealthController\`. What's the best name/path convention for it — \`/health\`, \`/api/health\`, \`/actuator/health\`, or something else? Looking for a recommendation and the reasoning behind it."
