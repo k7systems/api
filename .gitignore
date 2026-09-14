@@ -1,0 +1,17 @@
+# Maven
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Windows
+Thumbs.db
+.DS_Store
+
+# Environment / secrets
+.env
+*.env
